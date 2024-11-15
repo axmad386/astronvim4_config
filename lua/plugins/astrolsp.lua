@@ -98,6 +98,8 @@ return {
     },
     -- A custom `on_attach` function to be run after the default `on_attach` function
     -- takes two parameters `client` and `bufnr`  (`:h lspconfig-setup`)
-    on_attach = function(client, bufnr) end,
+    on_attach = function(_, bufnr)
+      require("custom.typescript-routes").on_attach(bufnr)
+    end,
   },
 }

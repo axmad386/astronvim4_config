@@ -91,18 +91,7 @@ local function on_attach(bufnr)
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 end
 
-local function init()
-  log "Initializing typescript-routes"
-  vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "typescript", "typescriptreact" },
-    callback = function(args)
-      log("FileType autocmd triggered for buffer: %d", args.buf)
-      on_attach(args.buf)
-    end,
-  })
-end
 
 return {
-  init = init,
   on_attach = on_attach,
 }
