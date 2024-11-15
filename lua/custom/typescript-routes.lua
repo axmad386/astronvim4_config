@@ -1,11 +1,11 @@
 -- At the top of typescript-routes.lua
-local log_file = io.open(vim.fn.stdpath "cache" .. "/typescript-routes.log", "a")
+-- local log_file = io.open(vim.fn.stdpath "cache" .. "/typescript-routes.log", "a")
 local function log(...)
-  if log_file then
-    log_file:write(string.format("[%s] ", os.date "%Y-%m-%d %H:%M:%S"))
-    log_file:write(string.format(...) .. "\n")
-    log_file:flush()
-  end
+  -- if log_file then
+  --   log_file:write(string.format("[%s] ", os.date "%Y-%m-%d %H:%M:%S"))
+  --   log_file:write(string.format(...) .. "\n")
+  --   log_file:flush()
+  -- end
 end
 
 -- Replace all print() calls with log()
@@ -34,7 +34,7 @@ local function find_controller_method(bufnr, controller_name, method_name)
     for _, symbol in ipairs(result) do
       -- log("Symbol: %s", vim.inspect(symbol))
       -- Check if the symbol belongs to the correct controller
-      if  symbol.location.uri:find(controller_name) and symbol.name == method_name then
+      if symbol.location.uri:find(controller_name) and symbol.name == method_name then
         local location = symbol.location
         local uri = location.uri or location.targetUri
         local range = location.range or location.targetRange
@@ -56,6 +56,11 @@ local function find_controller_method(bufnr, controller_name, method_name)
   end)
 end
 
+local function get_multiline_content(bufnr, start_line)
+  local lines = api.nvim_buf_get_lines(bufnr, start_line - 1, start_line + 1, false)
+  return table.concat(lines, "\n")
+end
+
 local function custom_definition_handler()
   local bufnr = api.nvim_get_current_buf()
   local line = api.nvim_get_current_line()
@@ -63,8 +68,14 @@ local function custom_definition_handler()
   log("Current line: %s", line)
 
   -- Pattern specifically for your route format
-  local pattern = '%[(%w+),%s*"([%w_%-]+)"%]'
-  local controller_name, method_name = line:match(pattern)
+  -- Pattern to match controller and method, potentially across multiple lines
+  local pattern = '%s*%[([%w_%-]+),%s*"([%w_%-]+)"%][sS]*'
+
+  -- Optionally, capture a few more lines from the buffer to handle multi-line definitions
+  local content = get_multiline_content(bufnr, api.nvim_win_get_cursor(0)[1] - 1)
+  log("Content: %s", content)
+
+  local controller_name, method_name = content:match(pattern)
 
   if controller_name and method_name then
     log("Matched: %s.%s", controller_name, method_name)
@@ -90,7 +101,6 @@ local function on_attach(bufnr)
   local opts = { noremap = true, silent = true, buffer = bufnr }
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 end
-
 
 return {
   on_attach = on_attach,
