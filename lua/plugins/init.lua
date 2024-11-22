@@ -2,7 +2,7 @@ return {
   -- buat GIT
   { "tpope/vim-fugitive", cmd = "G" },
 
-  { "fatih/vim-go", ft = "go" },
+  -- { "fatih/vim-go", ft = "go" },
   { "jwalton512/vim-blade", ft = "blade" },
 
   -- Semacam BetterPest kalau di VsCode
@@ -17,6 +17,6 @@ return {
   -- untuk delete list di quicklist dengan dd
   { "TamaMcGlinn/quickfixdd", cmd = "Ack" },
   { "lbrayner/vim-rzip" },
-  { "projekt0n/caret.nvim" },
-  { "tpope/vim-rails", ft = { "ruby", "eruby" } },
+  -- { "projekt0n/caret.nvim" },
+  -- { "tpope/vim-rails", ft = { "ruby", "eruby" } },
 }

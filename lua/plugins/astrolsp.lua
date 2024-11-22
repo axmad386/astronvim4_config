@@ -98,10 +98,9 @@ return {
     },
     -- A custom `on_attach` function to be run after the default `on_attach` function
     -- takes two parameters `client` and `bufnr`  (`:h lspconfig-setup`)
-    on_attach = function(_, bufnr)
-      -- if tsserver
-      local clients = vim.lsp.get_clients()
-      if clients[1] and clients[1].name == "tsserver" then require("custom.typescript-routes").on_attach(bufnr) end
-    end,
+    -- on_attach = function(client, bufnr)
+    --   -- check if clients include client.name = tsserver
+    --   if client.name == "tsserver" then require("custom.typescript-routes").on_attach(bufnr) end
+    -- end,
   },
 }

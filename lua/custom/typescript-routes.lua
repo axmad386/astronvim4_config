@@ -59,16 +59,15 @@ local function custom_definition_handler()
   -- Pattern specifically for your route format
   -- Pattern to match controller and method, potentially across multiple lines
   local pattern = '%s*%[([%w_%-]+),%s*"([%w_%-]+)"%][sS]*'
-
-  -- Optionally, capture a few more lines from the buffer to handle multi-line definitions
-  local content = get_multiline_content(bufnr, api.nvim_win_get_cursor(0)[1] - 1)
-
-  local controller_name, method_name = content:match(pattern)
-  -- if line not same as method_name, ignore
+  local line = api.nvim_get_current_line()
+  local controller_name, method_name = line:match(pattern)
   local current_word = vim.fn.expand "<cword>"
-  if current_word ~= method_name then
-    return false
-  end
+  if current_word ~= method_name then return false end
+
+  -- if not controller_name then
+  --   local content = get_multiline_content(bufnr, api.nvim_win_get_cursor(0)[1] - 1)
+  --   controller_name, method_name = content:match(pattern)
+  -- end
 
   if controller_name and method_name then
     find_controller_method(bufnr, controller_name, method_name)
