@@ -7,7 +7,8 @@
 ---@type LazySpec
 return {
   "AstroNvim/astrocommunity",
-  { import = "astrocommunity.colorscheme.everforest" },
+  { import = "astrocommunity.colorscheme.bamboo-nvim" },
+  -- { import = "astrocommunity.colorscheme.everforest" },
   -- { import = "astrocommunity.pack.typescript" },
   -- { import = "astrocommunity.pack.lua" },
   -- import/override with your plugins folder
